@@ -11,7 +11,7 @@ const apiPasswordGet = import.meta.env.VITE_DATA_FOR_SEO_API_PASSWORD;
 
 const PageInfo = () => {
   const [urlInfo, setUrlInfo] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const params = useParams();
 
@@ -36,6 +36,7 @@ const PageInfo = () => {
         }
       } catch (error) {
         toast.error("Error", error);
+        toast.error("Error: " + error.message);
         setLoading(false);
         setError(true);
       }
