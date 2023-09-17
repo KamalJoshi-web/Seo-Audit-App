@@ -6,8 +6,8 @@ import { useParams } from "react-router-dom";
 import { ClockLoader } from "react-spinners";
 import BasicDetails from "./BasicDetails";
 import OnPageResult from "./OnPageResult";
-const apiUsernameGet = import.meta.env.VITE_DATA_FOR_SEO_API_UNSERNAME;
-const apiPasswordGet = import.meta.env.VITE_DATA_FOR_SEO_API_PASSWORD;
+const apiUsername = import.meta.env.VITE_DATA_FOR_SEO_API_UNSERNAME;
+const apiPassword = import.meta.env.VITE_DATA_FOR_SEO_API_PASSWORD;
 
 const PageInfo = () => {
   const [urlInfo, setUrlInfo] = useState([]);
@@ -19,17 +19,22 @@ const PageInfo = () => {
     method: "get",
     url: `https://api.dataforseo.com/v3/on_page/summary/${params.id}`,
     auth: {
-      username: apiUsernameGet,
-      password: apiPasswordGet,
+      username: apiUsername,
+      password: apiPassword,
     },
   };
   useEffect(() => {
     const fetchUrlData = async () => {
       try {
         const { data } = await axios.request(ApiData);
-        if (data["tasks"][0]["result"][0]["crawl_progress"] === "in_progress") {
+        console.log(data);
+        if (
+          data["tasks"][0]["result"][0]["crawl_progress"] === "in_progress" ||
+          data["tasks"][0]["result"] === null
+        ) {
           setLoading(true);
-          setTimeout(fetchUrlData, 4000);
+
+          setTimeout(fetchUrlData, 20000);
         } else {
           setLoading(false);
           setUrlInfo(data["tasks"][0]["result"][0]);
